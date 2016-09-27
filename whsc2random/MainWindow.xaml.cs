@@ -23,9 +23,7 @@ namespace whsc2random
 
     public partial class MainWindow : Window
     {
-        const string FILE1 = "whsc2random.cfg";
-        const string FILE2 = "执法人员.txt";
-        const string FILE3 = "经营单位.txt";
+        const string FILE1 = "whsc2random.txt";
         List<CPerson> listPerons;
         List<CCity> listCities;
         List<String> listType;
@@ -34,23 +32,30 @@ namespace whsc2random
             PRINT_COMPANY, PRINT_POINT, PRINT_PERSON_DATA_WRITE, PRINT_PERSON_WATCH_WRITE;
         Random rand;
 
-
+        //双击移除已经选定的单位
         private void lbCompanySelected_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            //处理未选定任何项就双击的情况
+            if (lbCompanySelected.SelectedItem == null) return;
             string s = lbCompanySelected.SelectedItem.ToString();
             foreach (CCompany c in listCompanies)
             {
                 if (c.getCompany().Equals(s))
                 {
+                    //修改单位状态
                     c.setState(STATIC.UNSELETED);
                     break;
                 }
             }
+            //更新单位数据涉及控件显示
             RefeshListBox(STATIC.LISTBOX_COMPANY);
         }
 
+        //双击添加选定单位
         private void lbCompany_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            //处理未选定任何项就双击的情况
+            if (lbCompany.SelectedItem == null) return;
             string s = lbCompany.SelectedItem.ToString();
             foreach (CCompany c in listCompanies)
             {
@@ -63,11 +68,15 @@ namespace whsc2random
             RefeshListBox(STATIC.LISTBOX_COMPANY);
         }
 
+        //随机抽取人员
         private void btnGetPerson_Click(object sender, RoutedEventArgs e)
         {
+            //移除文本框中非数字字符,防止转换错误
             int countPerson = Convert.ToInt32(delNoNum(txtCountPerson.Text));
-            int countPersonSeleted = 0;
+            int countPersonSeleted = lbPersonSelected.Items.Count;
+            //将修正后字符显示到文本框
             txtCountPerson.Text = countPerson.ToString();
+            //随机抽取池初始化
             List<int> iList = new List<int>();
             for(int i = 0;i<listPerons.Count;i++)
             {
@@ -76,11 +85,15 @@ namespace whsc2random
                     iList.Add(i);
                 }
             }
+            //抽取池不为空,且已经抽取数量没到指定数量时,循环抽取
             while (iList.Count > 0 && countPersonSeleted < countPerson)
             {
+                //生成范围为0至(Count-1)的随机数
                 int index = rand.Next(iList.Count);
+                //修改池中对应序号所对应人员列表中序号所对应的人的状态,为选定
                 listPerons[iList[index]].setState(STATIC.SELETED);
                 countPersonSeleted++;
+                //把随机到的从随机池中移除
                 iList.RemoveAt(index);
             }
             RefeshListBox(STATIC.LISTBOX_PERSON);
@@ -89,7 +102,7 @@ namespace whsc2random
         private void btnGetCity_Click(object sender, RoutedEventArgs e)
         {
             int countCity = Convert.ToInt32(delNoNum(txtCountCity.Text));
-            int countCitySeleted = 0;
+            int countCitySeleted = lbCitySelected.Items.Count;
             txtCountCity.Text = countCity.ToString();
             List<int> iList = new List<int>();
             for (int i = 0; i < listCities.Count; i++)
@@ -130,6 +143,7 @@ namespace whsc2random
 
         }
 
+        //市场类型改变时,筛选显示单位列表
         private void cmbTypeOfCompany_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             RefeshListBox(STATIC.LISTBOX_COMPANY);
@@ -140,8 +154,11 @@ namespace whsc2random
             
         }
 
+        //双击移除城市的选定
         private void lbCitySelected_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            //处理未选定任何项就双击的情况
+            if (lbCitySelected.SelectedItem == null) return;
             string s = lbCitySelected.SelectedItem.ToString();
             foreach (CCity c in listCities)
             {
@@ -152,6 +169,7 @@ namespace whsc2random
                 }
             }
             RefeshListBox(STATIC.LISTBOX_CITY);
+            //城市选定会影响到单位列表的筛选
             RefeshListBox(STATIC.LISTBOX_COMPANY);
         }
 
@@ -162,6 +180,7 @@ namespace whsc2random
         private void txtCountPerson_TextChanged(object sender, TextChangedEventArgs e)
         {
         }
+        //移除字符串中的非0-9字符
         private string delNoNum(string s)
         {
             string newS = "";
@@ -173,6 +192,7 @@ namespace whsc2random
                     newS = newS + c;
                 }
             }
+            //当为空时设置为0
             if (newS.Equals(""))
             {
                 newS = "0";
@@ -180,8 +200,11 @@ namespace whsc2random
             return newS;
         }
 
+        //双击选定城市
         private void lbCity_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            //处理未选定任何项就双击的情况
+            if (lbCity.SelectedItem == null) return;
             string s = lbCity.SelectedItem.ToString();
             foreach (CCity c in listCities)
             {
@@ -195,8 +218,11 @@ namespace whsc2random
             RefeshListBox(STATIC.LISTBOX_COMPANY);
         }
 
+        //双击移除人员选定
         private void lbPersonSelected_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            //处理未选定任何项就双击的情况
+            if (lbPersonSelected.SelectedItem == null) return;
             string s = lbPersonSelected.SelectedItem.ToString();
             foreach (CPerson p in listPerons)
             {
@@ -209,8 +235,11 @@ namespace whsc2random
             RefeshListBox(STATIC.LISTBOX_PERSON);
         }
 
+        //双击添加人员选定
         private void lbPerson_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            //处理未选定任何项就双击的情况
+            if (lbPerson.SelectedItem == null) return;
             string s = lbPerson.SelectedItem.ToString();
             foreach(CPerson p in listPerons)
             {
@@ -233,19 +262,34 @@ namespace whsc2random
             rand = new Random();
             Init();
         }
+
+        //数据和控件初始化
         private void Init()
         {
             listPerons = new List<CPerson>();
             listCities = new List<CCity>();
             listType = new List<string>();
             listCompanies = new List<CCompany>();
+
+            //读取文件
             string[] buffer;
-            if (File.Exists(FILE1) && File.Exists(FILE2) && File.Exists(FILE3))
+            if (!File.Exists(FILE1))
             {
-                buffer = File.ReadAllLines(FILE1);
-                foreach(string s in buffer)
+                MessageBox.Show("缺少关键数据文件，程序无法正常运行");
+                this.Close();
+            }
+            buffer = File.ReadAllLines(FILE1);
+
+            //处理文件
+            //读取状态,初始0读取程序配置文本,1读取人员信息,2读取单位信息
+            int readState = 0;
+            const int READ_STATE_PERSON = 1;
+            const int READ_STATE_COMPANY = 2;
+            foreach (string s in buffer)
+            {
+                //注释行和空行不处理
+                if (!s.Substring(0, 1).Equals("-") && !s.Equals(""))
                 {
-                    
                     string[] cfg = s.Split(',');
                     switch (cfg[0])
                     {
@@ -275,11 +319,9 @@ namespace whsc2random
                             break;
                         case "P3C2T1":
                             COMPANY_TYPE_ALL = cfg[1];
-                            Console.WriteLine(COMPANY_TYPE_ALL + "," + COMPANY_TYPE_EACH);
                             break;
                         case "P3C2T2":
                             COMPANY_TYPE_EACH = cfg[1];
-                            Console.WriteLine(COMPANY_TYPE_ALL + "," + COMPANY_TYPE_EACH);
                             break;
                         case "P3C3":
                             label3.Content = cfg[1];
@@ -335,104 +377,118 @@ namespace whsc2random
                         case "P6T7":
                             PRINT_PERSON_WATCH_WRITE = cfg[1];
                             break;
+                        //遇到指定内容类型标签时,设置不同读取内容
+                        case "[Persons]":
+                            readState = READ_STATE_PERSON;
+                            break;
+                        case "[Companies]":
+                            readState = READ_STATE_COMPANY;
+                            break;
                         default:
+                            //当非注释且非文本标签ID且非内容类型标签时,总会来到这里
+                            //读取人员信息
+                            if (readState == READ_STATE_PERSON)
+                            {
+                                listPerons.Add(new CPerson(s));
+
+                            }
+                            //读取单位信息
+                            else if (readState == READ_STATE_COMPANY)
+                            {
+                                string[] company = s.Split(',');
+                                listCompanies.Add(new CCompany(company[0], company[1], company[2]));
+                            }
                             break;
                     }
                 }
-                buffer = File.ReadAllLines(FILE2);
-                foreach(string s in buffer)
+
+            }
+            //根据单位信息统计城市和类型
+            foreach (CCompany c in listCompanies)
+            {
+                //当城市列表不为空时,对比下,不重复添加
+                if (listCities.Count > 0)
                 {
-                    if (!s.Equals(""))
+                    bool isInList = false;
+                    foreach (CCity city in listCities)
                     {
-                        listPerons.Add(new CPerson(s));
-                    }
-                }
-                buffer = File.ReadAllLines(FILE3);
-                foreach (string s in buffer)
-                {
-                    if (!s.Equals(""))
-                    {
-                        string[] company = s.Split(',');
-                        listCompanies.Add(new CCompany(company[0], company[1], company[2]));
-                    }
-                }
-                foreach(CCompany c in listCompanies)
-                {
-                    if (listCities.Count > 0)
-                    {
-                        bool isInList = false;
-                        foreach(CCity city in listCities)
+                        if (city.getCity().Equals(c.getCity()))
                         {
-                            if (city.getCity().Equals(c.getCity()))
-                            {
-                                isInList = true;
-                            }
+                            isInList = true;
                         }
-                        if (!isInList)
-                        {
-                            listCities.Add(new CCity(c.getCity()));
-                        }
-                    }else
+                    }
+                    //列表中不存在时,才添加
+                    if (!isInList)
                     {
                         listCities.Add(new CCity(c.getCity()));
                     }
-                    if (listType.Count > 0)
+                }
+                //列表为空时,总是添加
+                else
+                {
+                    listCities.Add(new CCity(c.getCity()));
+                }
+                //当类型列表不为空时,对比下,不重复添加
+                if (listType.Count > 0)
+                {
+                    bool isInList = false;
+                    foreach (string t in listType)
                     {
-                        bool isInList = false;
-                        foreach (string t in listType)
+                        if (t.Equals(c.getType()))
                         {
-                            if (t.Equals(c.getType()))
-                            {
-                                isInList = true;
-                            }
-                        }
-                        if (!isInList)
-                        {
-                            listType.Add(c.getType());
+                            isInList = true;
                         }
                     }
-                    else
+                    if (!isInList)
                     {
                         listType.Add(c.getType());
                     }
                 }
-                if(listPerons.Count<=0 || listCities.Count <= 0 || listType.Count <= 0 || listCompanies.Count <= 0)
+                //列表为空时,总是添加
+                else
                 {
-                    MessageBox.Show("某个配置文件中数据出现错误，程序无法继续正常运行！");
-                    this.Close();
+                    listType.Add(c.getType());
                 }
-
-
-
-                cmbTypeOfCompany.Items.Clear();
-                cmbTypeOfCompany.Items.Add(COMPANY_TYPE_ALL);
-                cmbTypeOfCompany.Items.Add(COMPANY_TYPE_EACH);
-                foreach (string s in listType)
-                {
-                    cmbTypeOfCompany.Items.Add(s);
-                }
-                cmbTypeOfCompany.SelectedIndex = 0;
-
-                RefeshListBox(STATIC.LISTBOX_PERSON);
-                RefeshListBox(STATIC.LISTBOX_CITY);
-                RefeshListBox(STATIC.LISTBOX_COMPANY);
             }
-            else
+
+            //某类数据缺少时,程序无法正常抽取,不执行下去算了.
+            if (listPerons.Count <= 0 || listCities.Count <= 0 || listType.Count <= 0 || listCompanies.Count <= 0)
             {
-                MessageBox.Show("缺少关键数据文件，程序无法正常运行");
+                MessageBox.Show("配置文件中数据出现错误，程序无法继续正常运行！");
                 this.Close();
             }
-            
+
+            //初始化类型列表下拉选框
+            cmbTypeOfCompany.Items.Clear();
+            cmbTypeOfCompany.Items.Add(COMPANY_TYPE_ALL);
+            cmbTypeOfCompany.Items.Add(COMPANY_TYPE_EACH);
+            foreach (string s in listType)
+            {
+                cmbTypeOfCompany.Items.Add(s);
+            }
+            cmbTypeOfCompany.SelectedIndex = 0;
+
+            //更新其他列表的显示
+            RefeshListBox(STATIC.LISTBOX_PERSON);
+            RefeshListBox(STATIC.LISTBOX_CITY);
+            RefeshListBox(STATIC.LISTBOX_COMPANY);
+
+
         }
+
+        //更新列表显示
         private void RefeshListBox(int listboxGroup)
         {
+            //控制更新不同列表,总是成对更新
             switch (listboxGroup)
             {
+                //更新人员列表
                 case STATIC.LISTBOX_PERSON:
                     lbPerson.Items.Clear();
                     lbPersonSelected.Items.Clear();
                     foreach (CPerson p in listPerons)
                     {
+                        //根据不同状态向不同控件添加数据,下同
                         switch (p.getState())
                         {
                             case STATIC.UNSELETED:
@@ -446,6 +502,7 @@ namespace whsc2random
                         }
                     }
                     break;
+                //更新城市列表
                 case STATIC.LISTBOX_CITY:
                     lbCity.Items.Clear();
                     lbCitySelected.Items.Clear();
@@ -464,6 +521,7 @@ namespace whsc2random
                         }
                     }
                     break;
+                //更新单位列表
                 case STATIC.LISTBOX_COMPANY:
                     lbCompany.Items.Clear();
                     lbCompanySelected.Items.Clear();
@@ -485,26 +543,38 @@ namespace whsc2random
                     break;
             }
         }
+
+        //单位数据更新,其实只是更新状态
         private void RefeshCompanyState()
         {
             string type = cmbTypeOfCompany.SelectedItem.ToString();
             foreach (CCompany c in listCompanies)
             {
+                //已经保存的,和已经选定的,不改变状态,只会影响到待选定的单位列表中数据,lbCompany
                 if (!c.getState().Equals(STATIC.SAVED) && !c.getState().Equals(STATIC.SELETED))
                 {
+                    //不管3721，先隐藏掉不显示
                     c.setState(STATIC.HIDED);
+
+                    //根据市场类型筛选
                     bool isType = false;
+                    //全部或每类市场时,不对类型做筛选,全显示
                     if (type.Equals(COMPANY_TYPE_ALL) || type.Equals(COMPANY_TYPE_EACH))
                     {
                         isType = true;
                     }
+                    //当选定到具体市场时,判断下,当前单位属于该市场类型才显示
                     else if (type.Equals(c.getType()))
                     {
                         isType = true;
                     }
+
+                    //根据城市筛选
                     bool isCity = false;
+                    //当有城市被选定时,才显示对应城市数据
                     if (lbCitySelected.Items.Count > 0)
                     {
+                        //多个城市被选定时,每个都判断下,只要属于其中1个就显示
                         foreach (string city in lbCitySelected.Items)
                         {
                             if (city.Equals(c.getCity()))
@@ -514,6 +584,8 @@ namespace whsc2random
                             }
                         }
                     }
+
+                    //只有类型和城市都符合时,该单位才会被显示
                     if (isType && isCity)
                     {
                         c.setState(STATIC.UNSELETED);
@@ -530,6 +602,7 @@ namespace whsc2random
         public CPerson(string _name)
         {
             name = _name;
+            //所有数据对象初始状态都是未被选定的,下同
             state = STATIC.UNSELETED;
         }
         public string getName()
@@ -603,6 +676,8 @@ namespace whsc2random
             state = _state;
         }
     }
+
+    //一个静态类,用来提供一些静态常量和函数
     public static class STATIC
     {
         public const int LISTBOX_PERSON = 0;
