@@ -311,6 +311,9 @@ namespace whsc2random
                         case "P5C5":
                             btnReset.Content = cfg[1];
                             break;
+                        case "P5T1":
+                            txtMakerName.Text = cfg[1];
+                            break;
                         case "P6T1":
                             PRINT_UNIT = cfg[1];
                             break;
