@@ -28,8 +28,10 @@ namespace whsc2random
         List<CCity> listCities;
         List<String> listType;
         List<CCompany> listCompanies;
-        string COMPANY_TYPE_ALL, COMPANY_TYPE_EACH,PRINT_UNIT, PRINT_TIME, PRINT_PERSON, 
-            PRINT_COMPANY, PRINT_POINT, PRINT_PERSON_DATA_WRITE, PRINT_PERSON_WATCH_WRITE;
+        string COMPANY_TYPE_ALL, COMPANY_TYPE_EACH,     //单位筛选类型
+            PRINT_UNIT, PRINT_TIME, PRINT_PERSON,       //打印:单位、时间、人员
+            PRINT_COMPANY, PRINT_POINT,                 //打印:对象、分隔符
+            PRINT_PERSON_DATA_WRITE, PRINT_PERSON_WATCH_WRITE;      //打印：制作人、监督人
         Random rand;
 
         //双击移除已经选定的单位
@@ -99,6 +101,7 @@ namespace whsc2random
             RefeshListBox(STATIC.LISTBOX_PERSON);
         }
 
+        //随机抽取城市
         private void btnGetCity_Click(object sender, RoutedEventArgs e)
         {
             int countCity = Convert.ToInt32(delNoNum(txtCountCity.Text));
@@ -123,24 +126,185 @@ namespace whsc2random
             RefeshListBox(STATIC.LISTBOX_COMPANY);
         }
 
+        //随机抽取单位
         private void btnGetCompany_Click(object sender, RoutedEventArgs e)
         {
+            if (lbCompany.Items.Count <= 0) return;
+            int countCompany = Convert.ToInt32(delNoNum(txtCountCompany.Text));
+            txtCountCompany.Text = countCompany.ToString();
+            string type = cmbTypeOfCompany.SelectedItem.ToString();
+            //总是清空已经选定的然后随机抽
+            foreach (CCompany c in listCompanies)
+            {
+                if (c.getState().Equals(STATIC.SELETED)) c.setState(STATIC.UNSELETED);
+            }
+            //每个城市进行抽取
+            foreach (string city in lbCitySelected.Items)
+            {
+                if(type == COMPANY_TYPE_ALL)            //所有市场随机抽取
+                {
+                    List<int> iList = new List<int>();
+                    //筛选出当前城市所有单位
+                    for (int i = 0; i < listCompanies.Count; i++)
+                    {
+                        if (listCompanies[i].getState().Equals(STATIC.UNSELETED) 
+                            && listCompanies[i].getCity().Equals(city))
+                        {
+                            iList.Add(i);
+                        }
+                    }
+                    int countCompanySeleted = 0;
+                    while (iList.Count > 0 && countCompanySeleted < countCompany)
+                    {
+                        int index = rand.Next(iList.Count);
+                        listCompanies[iList[index]].setState(STATIC.SELETED);
+                        countCompanySeleted++;
+                        iList.RemoveAt(index);
+                    }
+                }
+                else if(type == COMPANY_TYPE_EACH)     //每类市场随机抽取
+                {
+                    List<int> iList = new List<int>();
+                    //筛选出当前城市所有单位
+                    for (int i = 0; i < listCompanies.Count; i++)
+                    {
+                        if (listCompanies[i].getState().Equals(STATIC.UNSELETED)
+                            && listCompanies[i].getCity().Equals(city))
+                        {
+                            iList.Add(i);
+                        }
+                    }
+                    Dictionary<string, int> countCompanyForType = new Dictionary<string, int>();
+                    for(int i = 0; i < listType.Count; i++)
+                    {
+                        countCompanyForType.Add(listType[i], 0);
+                    }
+                    while (iList.Count > 0)
+                    {
+                        int index = rand.Next(iList.Count);
+                        CCompany tempC = listCompanies[iList[index]];
+                        //当单位的类型对应类型计数还不够指定数量时，选定它
+                        if (countCompanyForType[tempC.getType()] < countCompany)
+                        {
+                            tempC.setState(STATIC.SELETED);
+                            countCompanyForType[tempC.getType()]++;
+                        }
+
+
+                        //每类都选够数量了，就退出本次随机
+                        bool allCount = true;
+                        for (int i = 0; i < countCompanyForType.Count; i++)
+                        {
+                            if (countCompanyForType.ElementAt(i).Value < countCompany)
+                                allCount = false;
+                        }
+                        if (allCount) break;
+                        iList.RemoveAt(index);
+                    }
+
+                }
+                else                                   //单一市场抽取
+                {
+                    List<int> iList = new List<int>();
+                    //筛选出当前城市对应市场类型的单位
+                    for (int i = 0; i < listCompanies.Count; i++)
+                    {
+                        if (listCompanies[i].getState().Equals(STATIC.UNSELETED)
+                            && listCompanies[i].getCity().Equals(city)
+                            && listCompanies[i].getType().Equals(type))
+                        {
+                            iList.Add(i);
+                        }
+                    }
+                    int countCompanySeleted = 0;
+                    while (iList.Count > 0 && countCompanySeleted < countCompany)
+                    {
+                        int index = rand.Next(iList.Count);
+                        listCompanies[iList[index]].setState(STATIC.SELETED);
+                        countCompanySeleted++;
+                        iList.RemoveAt(index);
+                    }
+                }
+            }
+            RefeshListBox(STATIC.LISTBOX_COMPANY);
 
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (lbPersonSelected.Items.Count <= 0
+                || lbCitySelected.Items.Count <= 0
+                || lbCompanySelected.Items.Count <= 0)
+                return;
 
+            string dataSave = "";
+            dataSave = PRINT_PERSON;
+            foreach (string s in lbPersonSelected.Items)
+            {
+                dataSave = dataSave + s + PRINT_POINT;
+            }
+            dataSave = dataSave.Substring(0, dataSave.Length - 1);
+            rtxDataShow.AppendText(dataSave);
+            rtxDataShow.AppendText("\r");
+
+            dataSave = "";
+            dataSave = dataSave + PRINT_COMPANY;
+            foreach (string s in lbCompanySelected.Items)
+            {
+                dataSave = dataSave + s + PRINT_POINT;
+            }
+            dataSave = dataSave.Substring(0, dataSave.Length - 1);
+            rtxDataShow.AppendText(dataSave);
+            rtxDataShow.AppendText("\r\n");
+            foreach (CPerson p in listPerons)
+            {
+                if (p.getState().Equals(STATIC.SELETED))
+                    p.setState(STATIC.SAVED);
+            }
+            foreach (CCity c in listCities)
+            {
+                if (c.getState().Equals(STATIC.SELETED))
+                {
+                    if ((bool)checkBox.IsChecked)
+                    {
+                        c.setState(STATIC.UNSELETED);
+                    }else
+                    {
+                        c.setState(STATIC.SAVED);
+                    }
+                }
+                    
+            }
+            foreach (CCompany c in listCompanies)
+            {
+                if (c.getState().Equals(STATIC.SELETED))
+                    c.setState(STATIC.SAVED);
+            }
+            RefeshListBox(STATIC.LISTBOX_PERSON);
+            RefeshListBox(STATIC.LISTBOX_CITY);
+            RefeshListBox(STATIC.LISTBOX_COMPANY);
         }
 
         private void btnGetOneAndSave_Click(object sender, RoutedEventArgs e)
         {
-
+            if (lbPerson.Items.Count <= 0
+                || lbCity.Items.Count <= 0)
+                return;
+            btnGetPerson_Click(sender, e);
+            btnGetCity_Click(sender, e);
+            btnGetCompany_Click(sender, e);
+            btnSave_Click(sender, e); 
         }
 
         private void btnGetAllAndSave_Click(object sender, RoutedEventArgs e)
         {
-
+            while(lbPerson.Items.Count > 0 && lbCity.Items.Count > 0)
+            {
+                btnGetPerson_Click(sender, e);
+                btnGetCity_Click(sender, e);
+                btnGetCompany_Click(sender, e);
+                btnSave_Click(sender, e);
+            }
         }
 
         //市场类型改变时,筛选显示单位列表
@@ -198,6 +362,12 @@ namespace whsc2random
                 newS = "0";
             }
             return newS;
+        }
+
+        private void btnReset_Click(object sender, RoutedEventArgs e)
+        {
+            Init();
+            rtxDataShow.Document.Blocks.Clear();
         }
 
         //双击选定城市
@@ -547,6 +717,7 @@ namespace whsc2random
         //单位数据更新,其实只是更新状态
         private void RefeshCompanyState()
         {
+            if (cmbTypeOfCompany.SelectedItem == null) return;
             string type = cmbTypeOfCompany.SelectedItem.ToString();
             foreach (CCompany c in listCompanies)
             {

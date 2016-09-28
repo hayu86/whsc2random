@@ -17,7 +17,7 @@
         <Button x:Name="btnGetPerson" Content="抽取人员" HorizontalAlignment="Left" Height="24" Margin="10,202.343,0,0" VerticalAlignment="Top" Width="100" d:LayoutOverrides="LeftMargin, RightMargin" Click="btnGetPerson_Click"/>
         <ListBox x:Name="lbPerson" HorizontalAlignment="Left" Margin="10,24,0,164" Width="100" MouseDoubleClick="lbPerson_MouseDoubleClick"/>
         <Button x:Name="btnGetCity" Content="抽取区域" HorizontalAlignment="Left" Height="24" Margin="118,202.343,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="0.705,0.539" Click="btnGetCity_Click"/>
-        <ListBox x:Name="lbCity" HorizontalAlignment="Left" Margin="118,24,0,164" Width="100" MouseDoubleClick="lbCity_MouseDoubleClick"/>
+        <ListBox x:Name="lbCity" HorizontalAlignment="Left" Margin="118,24,0,188" Width="100" MouseDoubleClick="lbCity_MouseDoubleClick"/>
         <Button x:Name="btnGetCompany" Content="抽取检查对象" Height="24" Margin="226,202.343,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" Click="btnGetCompany_Click"/>
         <ListBox x:Name="lbCompany" Margin="225,24,95,164" d:LayoutOverrides="Width" MouseDoubleClick="lbCompany_MouseDoubleClick"/>
         <RichTextBox x:Name="rtxDataShow" Margin="-86.332,64,0,0" HorizontalAlignment="Left" Width="203" Height="247.343" VerticalAlignment="Top" IsReadOnly="True" Grid.Column="1" d:LayoutOverrides="HorizontalAlignment">
@@ -38,15 +38,16 @@
         <TextBox x:Name="txtMakerName" HorizontalAlignment="Left" Width="146.669" Margin="-31.001,26,0,0" Height="16" VerticalAlignment="Top" RenderTransformOrigin="0.612,0.355" Grid.Column="1" d:LayoutOverrides="HorizontalAlignment" MaxLines="1"/>
         <Label x:Name="label3_Copy1" Content="制作单位" Margin="427.999,20.663,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="61"/>
         <Label x:Name="label3_Copy2" Content="数据" Margin="427.999,40,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="53"/>
-        <Button x:Name="btnSave" Content="保存已抽取" HorizontalAlignment="Left" Height="24" Margin="10,316.343,0,-2.343" VerticalAlignment="Top" Width="99" d:LayoutOverrides="LeftMargin, RightMargin" Click="btnSave_Click"/>
-        <Button x:Name="btnGetOneAndSave" Content="抽取一组并保存" HorizontalAlignment="Left" Height="24" Margin="118,316.343,0,-2.343" VerticalAlignment="Top" Width="150" RenderTransformOrigin="0.705,0.539" Click="btnGetOneAndSave_Click"/>
-        <Button x:Name="btnGetAllAndSave" Content="抽取全部并保存" Height="24" Margin="275,316.343,0,-2.343" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Click="btnGetAllAndSave_Click"/>
+        <Button x:Name="btnSave" Content="保存已抽取" HorizontalAlignment="Left" Height="24" Margin="10,316,0,-2" VerticalAlignment="Top" Width="415" Click="btnSave_Click"/>
+        <Button x:Name="btnGetOneAndSave" Content="抽取一组并保存" HorizontalAlignment="Left" Height="24" Margin="118,316.343,0,-2.343" VerticalAlignment="Top" Width="150" RenderTransformOrigin="0.705,0.539" Click="btnGetOneAndSave_Click" IsEnabled="False" Visibility="Hidden"/>
+        <Button x:Name="btnGetAllAndSave" Content="抽取全部并保存" Height="24" Margin="275,316.343,0,-2.343" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Click="btnGetAllAndSave_Click" IsEnabled="False" Visibility="Hidden"/>
         <Button x:Name="btnPrintPreview" Content="打印预览" HorizontalAlignment="Right" Height="24" Margin="0,316.343,-13.668,-2.343" VerticalAlignment="Top" Width="100"/>
-        <Button x:Name="btnReset" Content="重置" HorizontalAlignment="Left" Height="24" Margin="71.668,316.343,0,-2.343" VerticalAlignment="Top" Width="44" Grid.Column="1"/>
+        <Button x:Name="btnReset" Content="重置" HorizontalAlignment="Left" Height="24" Margin="71.668,316.343,0,-2.343" VerticalAlignment="Top" Width="44" Grid.Column="1" Click="btnReset_Click"/>
         <Label x:Name="label3_Copy3" Content="执法人员" Margin="6.5,1.506,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="94" d:LayoutOverrides="HorizontalAlignment"/>
         <Label x:Name="label3_Copy4" Content="区域" Margin="115,1.506,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="88" d:LayoutOverrides="HorizontalAlignment"/>
         <Label x:Name="label3_Copy5" Content="经营单位" Margin="222,1.506,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="161"/>
         <Label x:Name="label3_Copy6" Content="已抽取数据" Margin="428.5,1.506,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="81.5"/>
+        <CheckBox x:Name="checkBox" Content="可重复抽取" HorizontalAlignment="Left" Margin="118,157,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.915,-0.809"/>
 
     </Grid>
 </Window>
