@@ -12,7 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Forms;
 using System.IO;
+using System.Drawing.Printing;
+using System.Drawing;
 
 namespace whsc2random
 {
@@ -29,10 +32,13 @@ namespace whsc2random
         List<String> listType;
         List<CCompany> listCompanies;
         string COMPANY_TYPE_ALL, COMPANY_TYPE_EACH,     //单位筛选类型
-            PRINT_UNIT, PRINT_TIME, PRINT_PERSON,       //打印:单位、时间、人员
+            PRINT_TITLE,PRINT_UNIT, PRINT_TIME, PRINT_PERSON,       //打印:单位、时间、人员
             PRINT_COMPANY, PRINT_POINT,                 //打印:对象、分隔符
             PRINT_PERSON_DATA_WRITE, PRINT_PERSON_WATCH_WRITE;      //打印：制作人、监督人
         Random rand;
+        PrintDocument printDocument;
+        StringReader lineReader;
+
 
         //双击移除已经选定的单位
         private void lbCompanySelected_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -337,7 +343,7 @@ namespace whsc2random
             RefeshListBox(STATIC.LISTBOX_COMPANY);
         }
 
-        private void txtCountPerson_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void txtCountPerson_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
         }
 
@@ -368,6 +374,137 @@ namespace whsc2random
         {
             Init();
             rtxDataShow.Document.Blocks.Clear();
+        }
+
+        private void btnPrintPreview_Click(object sender, RoutedEventArgs e)
+        {
+            PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog();
+            printPreviewDialog.Document = printDocument;
+            lineReader = null;
+            try
+            {
+                printPreviewDialog.ShowDialog();
+            }
+            catch(Exception excep)
+            {
+                System.Windows.Forms.MessageBox.Show(excep.Message, "打印出错", System.Windows.Forms.MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
+        }
+        private void printDocument_PrintPage(Object sender,PrintPageEventArgs e)
+        {
+            Font printFont;
+            SolidBrush myBrush;
+
+            Graphics g = e.Graphics;
+            float linesPerPage = 0;
+            int count = 0;
+            float leftMargin = e.MarginBounds.Left;
+            float topMargin = e.MarginBounds.Top;
+            float bottomMargin = e.MarginBounds.Bottom;
+            float rightMargin = e.MarginBounds.Right;
+            float yPosition = topMargin;
+
+            string tempStr = mainWin.Title;
+            printFont = new Font(new System.Drawing.FontFamily("黑体"), 20);
+            myBrush = new SolidBrush(System.Drawing.Color.Black);
+            StringFormat sf = new StringFormat();
+            g.DrawString(tempStr, printFont, myBrush,
+                leftMargin + (e.MarginBounds.Width- g.MeasureString(tempStr, printFont).Width)/2, yPosition,sf);
+            yPosition = (float)(yPosition + printFont.GetHeight(g) * 1.5);
+
+            tempStr = PRINT_UNIT + txtMakerName.Text;
+            printFont = new Font(new System.Drawing.FontFamily("宋体"), 16);
+            g.DrawString(tempStr, printFont, myBrush, leftMargin, yPosition,sf);
+            yPosition = (float)(yPosition + printFont.GetHeight(g) * 1.5);
+
+            tempStr = PRINT_TIME + DateTime.Now;
+            g.DrawString(tempStr, printFont, myBrush, leftMargin, yPosition, sf);
+            yPosition = (float)(yPosition + printFont.GetHeight(g) * 1.5);
+
+            tempStr = PRINT_PERSON_WATCH_WRITE;
+            sf = new StringFormat();
+            sf.Alignment = StringAlignment.Near;
+            sf.LineAlignment = StringAlignment.Near;
+            g.DrawString(tempStr, printFont, myBrush, leftMargin, (float)(e.MarginBounds.Bottom- printFont.GetHeight(g) * 1.5), sf);
+
+            tempStr = PRINT_PERSON_DATA_WRITE;
+            sf = new StringFormat();
+            sf.Alignment = StringAlignment.Near;
+            sf.LineAlignment = StringAlignment.Near;
+            g.DrawString(tempStr, printFont, myBrush, leftMargin, e.MarginBounds.Bottom, sf);
+
+            if(lineReader == null)
+            {
+                lineReader = getDataLine(e,printFont);
+            }
+            string line = null;
+            linesPerPage = (e.MarginBounds.Bottom - printFont.GetHeight(g) * 4 - yPosition) / (printFont.GetHeight(g)*1.5f)-1;
+            while(count<linesPerPage && ((line = lineReader.ReadLine()) != null))
+            {
+                yPosition = (float)(yPosition + printFont.GetHeight(g) * 1.5);
+                g.DrawString(line, printFont, myBrush, leftMargin, yPosition, sf);
+                count++;
+            }
+            if(line != null)
+            {
+                e.HasMorePages = true;
+            }
+            else
+            {
+                e.HasMorePages = false;
+                lineReader = null;
+            }
+
+        }
+
+        private void btnPrint_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.PrintDialog printDialog = new System.Windows.Forms.PrintDialog();
+            printDialog.Document = printDocument;
+            lineReader = null;
+            if(printDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                try
+                {
+                    printDocument.Print();
+                }
+                catch (Exception excep)
+                {
+                    System.Windows.Forms.MessageBox.Show(excep.Message, "打印出错", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    printDocument.PrintController.OnEndPrint(printDocument,new PrintEventArgs());
+                }
+            }
+        }
+
+        private StringReader getDataLine(PrintPageEventArgs e, Font f)
+        {
+            StringReader tempSR = new StringReader(new TextRange(rtxDataShow.Document.ContentStart, rtxDataShow.Document.ContentEnd).Text);
+            int lineWidthCount = 0;
+            String testStr = "";
+            String returnStr = "";
+            while((testStr = tempSR.ReadLine()) != null)
+            {
+                if (testStr.Length > PRINT_PERSON.Length && !returnStr.Equals("")
+                    && PRINT_PERSON.Equals(testStr.Substring(0, PRINT_PERSON.Length)))
+                {
+                    returnStr = returnStr + '\n';
+                }
+                if(lineWidthCount == 0)
+                {
+                    lineWidthCount = (int)(e.MarginBounds.Width / (e.Graphics.MeasureString(testStr, f).Width/testStr.Length));
+                    STATIC.LOG(lineWidthCount.ToString());
+                }
+                while(testStr.Length > lineWidthCount)
+                {
+                    int l = testStr.Length;
+                    returnStr = returnStr + testStr.Substring(0, lineWidthCount) + '\n';
+                    testStr = testStr.Substring(lineWidthCount, l - lineWidthCount);
+                }
+                returnStr = returnStr + testStr + '\n';
+            }
+            return new StringReader(returnStr);
         }
 
         //双击选定城市
@@ -424,6 +561,8 @@ namespace whsc2random
 
         public MainWindow()
         {
+            printDocument = new PrintDocument();
+            printDocument.PrintPage += new PrintPageEventHandler(this.printDocument_PrintPage);
             InitializeComponent();
         }
 
@@ -445,7 +584,7 @@ namespace whsc2random
             string[] buffer;
             if (!File.Exists(FILE1))
             {
-                MessageBox.Show("缺少关键数据文件，程序无法正常运行");
+                System.Windows.MessageBox.Show("缺少关键数据文件，程序无法正常运行");
                 this.Close();
             }
             buffer = File.ReadAllLines(FILE1);
@@ -624,7 +763,7 @@ namespace whsc2random
             //某类数据缺少时,程序无法正常抽取,不执行下去算了.
             if (listPerons.Count <= 0 || listCities.Count <= 0 || listType.Count <= 0 || listCompanies.Count <= 0)
             {
-                MessageBox.Show("配置文件中数据出现错误，程序无法继续正常运行！");
+                System.Windows.MessageBox.Show("配置文件中数据出现错误，程序无法继续正常运行！");
                 this.Close();
             }
 

@@ -7,10 +7,10 @@ using System.Windows;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("whsc2random")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("文化市场双随机抽取程序")]
+[assembly: AssemblyDescription("文化市场双随机抽取程序")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("凌云县文化市场综合执法大队")]
 [assembly: AssemblyProduct("whsc2random")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
