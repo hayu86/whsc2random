@@ -17,7 +17,6 @@ F:\WorkSpace\whsc2random\whsc2random\obj\Debug\whsc2random.exe
 F:\WorkSpace\whsc2random\whsc2random\obj\Debug\whsc2random.pdb
 F:\WorkSpace\whsc2random\whsc2random\bin\Debug\whsc2random.exe
 F:\WorkSpace\whsc2random\whsc2random\bin\Debug\whsc2random.pdb
-F:\WorkSpace\whsc2random\whsc2random\obj\Debug\whsc2random.csprojResolveAssemblyReference.cache
 F:\WorkSpace\whsc2random\whsc2random\obj\Debug\MainWindow.g.cs
 F:\WorkSpace\whsc2random\whsc2random\obj\Debug\App.g.cs
 F:\WorkSpace\whsc2random\whsc2random\obj\Debug\whsc2random_MarkupCompile.cache
@@ -26,3 +25,6 @@ F:\WorkSpace\whsc2random\whsc2random\obj\Debug\MainWindow.baml
 F:\WorkSpace\whsc2random\whsc2random\obj\Debug\whsc2random.g.resources
 F:\WorkSpace\whsc2random\whsc2random\obj\Debug\whsc2random.Properties.Resources.resources
 F:\WorkSpace\whsc2random\whsc2random\obj\Debug\whsc2random.csproj.GenerateResource.Cache
+F:\WorkSpace\whsc2random\whsc2random\bin\Debug\whsc2random.exe.CodeAnalysisLog.xml
+F:\WorkSpace\whsc2random\whsc2random\bin\Debug\whsc2random.exe.lastcodeanalysissucceeded
+F:\WorkSpace\whsc2random\whsc2random\obj\Debug\whsc2random.csprojResolveAssemblyReference.cache

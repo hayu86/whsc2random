@@ -21,7 +21,7 @@
         <ListBox x:Name="lbCity" HorizontalAlignment="Left" Margin="118,24,0,188" Width="100" MouseDoubleClick="lbCity_MouseDoubleClick"/>
         <Button x:Name="btnGetCompany" Content="抽取检查对象" Height="24" Margin="226,202.343,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" Click="btnGetCompany_Click"/>
         <ListBox x:Name="lbCompany" Margin="225,24,95,164" d:LayoutOverrides="Width" MouseDoubleClick="lbCompany_MouseDoubleClick"/>
-        <RichTextBox x:Name="rtxDataShow" Margin="-86.332,64,0,0" HorizontalAlignment="Left" Width="203" Height="247.343" VerticalAlignment="Top" IsReadOnly="True" Grid.Column="1" d:LayoutOverrides="HorizontalAlignment">
+        <RichTextBox x:Name="rtxDataShow" Margin="-86.332,64,0,0" HorizontalAlignment="Left" Width="203" Height="247.343" VerticalAlignment="Top" IsReadOnly="True" Grid.Column="1" d:LayoutOverrides="HorizontalAlignment" VerticalScrollBarVisibility="Auto">
             <FlowDocument/>
         </RichTextBox>
         <ListBox x:Name="lbPersonSelected" HorizontalAlignment="Right" Margin="0,231.343,410,0" Width="100" Height="80" VerticalAlignment="Top" d:LayoutOverrides="Height" MouseDoubleClick="lbPersonSelected_MouseDoubleClick"/>
@@ -51,8 +51,8 @@
         <CheckBox x:Name="checkBox" Content="可重复抽取" HorizontalAlignment="Left" Margin="118,157,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.915,-0.809"/>
         <Button x:Name="btnPrint" Content="打印" HorizontalAlignment="Right" Height="24" Margin="0,316,155,-2" VerticalAlignment="Top" Width="47" Click="btnPrint_Click" Grid.Column="1"/>
         <Button x:Name="btnReset_Copy" Content="重置" HorizontalAlignment="Left" Height="24" Margin="10,316,0,-2" VerticalAlignment="Top" Width="44" Click="btnReset_Click"/>
-        <Button x:Name="btnPageSet" Content="页面" HorizontalAlignment="Right" Height="24" Margin="0,316,39,-2" VerticalAlignment="Top" Width="47" Click="btnPrintPreview_Click"/>
-        <Button x:Name="btnPrintSet" Content="打印机" HorizontalAlignment="Right" Height="24" Margin="0,316,260,-2" VerticalAlignment="Top" Width="47" Click="btnPrintPreview_Click" Grid.ColumnSpan="2"/>
+        <Button x:Name="btnPageSet" Content="页面" HorizontalAlignment="Right" Height="24" Margin="0,316,39,-2" VerticalAlignment="Top" Width="47" Click="btnPageSet_Click"/>
+        <Button x:Name="btnPrintSet" Content="打印机" HorizontalAlignment="Right" Height="24" Margin="0,316,260,-2" VerticalAlignment="Top" Width="47" Click="btnPrintSet_Click" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>

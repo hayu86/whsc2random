@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Printing;
@@ -289,6 +282,7 @@ namespace whsc2random
             RefeshListBox(STATIC.LISTBOX_PERSON);
             RefeshListBox(STATIC.LISTBOX_CITY);
             RefeshListBox(STATIC.LISTBOX_COMPANY);
+            rtxDataShow.ScrollToEnd();
         }
 
         private void btnGetOneAndSave_Click(object sender, RoutedEventArgs e)
@@ -443,9 +437,13 @@ namespace whsc2random
             linesPerPage = (e.MarginBounds.Bottom - printFont.GetHeight(g) * 4 - yPosition) / (printFont.GetHeight(g)*1.5f)-1;
             while(count<linesPerPage && ((line = lineReader.ReadLine()) != null))
             {
-                yPosition = (float)(yPosition + printFont.GetHeight(g) * 1.5);
-                g.DrawString(line, printFont, myBrush, leftMargin, yPosition, sf);
-                count++;
+                if(count != 0 || !line.Equals(""))
+                {
+                    yPosition = (float)(yPosition + printFont.GetHeight(g) * 1.5);
+                    g.DrawString(line, printFont, myBrush, leftMargin, yPosition, sf);
+                    count++;
+                }
+
             }
             if(line != null)
             {
@@ -476,6 +474,20 @@ namespace whsc2random
                     printDocument.PrintController.OnEndPrint(printDocument,new PrintEventArgs());
                 }
             }
+        }
+
+        private void btnPrintSet_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.PrintDialog printDialog = new System.Windows.Forms.PrintDialog();
+            printDialog.Document = printDocument;
+            printDialog.ShowDialog();
+        }
+
+        private void btnPageSet_Click(object sender, RoutedEventArgs e)
+        {
+            PageSetupDialog psDialog = new PageSetupDialog();
+            psDialog.Document = printDocument;
+            psDialog.ShowDialog();
         }
 
         private StringReader getDataLine(PrintPageEventArgs e, Font f)
@@ -776,6 +788,12 @@ namespace whsc2random
                 cmbTypeOfCompany.Items.Add(s);
             }
             cmbTypeOfCompany.SelectedIndex = 0;
+
+            if(listCities.Count == 1)
+            {
+                checkBox.IsChecked = true;
+                checkBox.IsEnabled = false;
+            }
 
             //更新其他列表的显示
             RefeshListBox(STATIC.LISTBOX_PERSON);
