@@ -133,10 +133,10 @@ namespace whsc2random
             txtCountCompany.Text = countCompany.ToString();
             string type = cmbTypeOfCompany.SelectedItem.ToString();
             //总是清空已经选定的然后随机抽
-            foreach (CCompany c in listCompanies)
-            {
-                if (c.getState().Equals(STATIC.SELETED)) c.setState(STATIC.UNSELETED);
-            }
+            //foreach (CCompany c in listCompanies)
+            //{
+            //    if (c.getState().Equals(STATIC.SELETED)) c.setState(STATIC.UNSELETED);
+            //}
             //每个城市进行抽取
             foreach (string city in lbCitySelected.Items)
             {
@@ -266,7 +266,8 @@ namespace whsc2random
                 {
                     if ((bool)checkBox.IsChecked)
                     {
-                        c.setState(STATIC.UNSELETED);
+                        if(listCities.Count > 1)
+                            c.setState(STATIC.UNSELETED);
                     }else
                     {
                         c.setState(STATIC.SAVED);
@@ -793,6 +794,7 @@ namespace whsc2random
             {
                 checkBox.IsChecked = true;
                 checkBox.IsEnabled = false;
+                listCities[0].setState(STATIC.SELETED);
             }
 
             //更新其他列表的显示
@@ -846,6 +848,13 @@ namespace whsc2random
                             default:
                                 break;
                         }
+                    }
+                    if (lbCitySelected.Items.Count > 0)
+                    {
+                        btnGetCompany.IsEnabled = true;
+                    }else
+                    {
+                        btnGetCompany.IsEnabled = false;
                     }
                     break;
                 //更新单位列表
@@ -911,6 +920,10 @@ namespace whsc2random
                                 break;
                             }
                         }
+                    }
+                    else
+                    {
+                        isCity = true;
                     }
 
                     //只有类型和城市都符合时,该单位才会被显示

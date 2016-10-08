@@ -4,7 +4,7 @@
   <description asmv2:iconFile="logo.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="whsc2random" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
+    <assemblyIdentity name="whsc2random" version="1.1.0.0" language="neutral" processorArchitecture="x86" />
     <commandLine file="whsc2random.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -44,13 +44,13 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="whsc2random.exe" size="193952">
-      <assemblyIdentity name="whsc2random" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
+      <assemblyIdentity name="whsc2random" version="1.1.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>CcBTSrRzG0xoMdPeFpG65VBtBMI=</dsig:DigestValue>
+        <dsig:DigestValue>XVXWhbioC3ZhpLTZsGR0yiLPDAo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
