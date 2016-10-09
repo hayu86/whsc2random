@@ -26,8 +26,8 @@
         <ListBox x:Name="lbPersonSelected" HorizontalAlignment="Left" Margin="21,352,0,0" Width="100" Height="96" VerticalAlignment="Top" MouseDoubleClick="lbPersonSelected_MouseDoubleClick"/>
         <ListBox x:Name="lbCitySelected" HorizontalAlignment="Left" Margin="132,352,0,0" Width="100" Height="96" VerticalAlignment="Top" MouseDoubleClick="lbCitySelected_MouseDoubleClick"/>
         <ListBox x:Name="lbCompanySelected" Margin="243,352,0,0" Height="96" Width="223" VerticalAlignment="Top" HorizontalAlignment="Left" MouseDoubleClick="lbCompanySelected_MouseDoubleClick"/>
-        <Label x:Name="label" Content="抽取数量" Margin="19,280,0,0" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="61"/>
-        <Label x:Name="label1" Content="抽取数量" Margin="130,280,0,0" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="60"/>
+        <Label x:Name="label" Content="抽取数量" Margin="15,280,0,0" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="61"/>
+        <Label x:Name="label1" Content="抽取数量" Margin="127,280,0,0" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="60"/>
         <TextBox x:Name="txtCountCity" Text="2" Width="40" Margin="192,280,0,0" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="24" VerticalAlignment="Top"/>
         <TextBox x:Name="txtCountPerson" Text="2" Width="40" Margin="81,280,0,0" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="24" VerticalAlignment="Top" PreviewKeyDown="txtCountPerson_PreviewKeyDown" TextChanged="txtCountPerson_TextChanged"/>
         <Label x:Name="label3" Content="抽取数量" Margin="367,280,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="57"/>
@@ -35,17 +35,17 @@
         <Label x:Name="label3_Copy" Content="市场" Margin="238,280,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left"/>
         <ComboBox x:Name="cmbTypeOfCompany" Margin="272,282,0,0" VerticalAlignment="Top" DataContextChanged="cmbTypeOfCompany_DataContextChanged" SelectionChanged="cmbTypeOfCompany_SelectionChanged" HorizontalAlignment="Left" Width="90"/>
         <TextBox x:Name="txtMakerName" HorizontalAlignment="Left" Width="203" Margin="552,43,0,0" Height="24" VerticalContentAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.612,0.355" MaxLines="1"/>
-        <Label x:Name="label3_Copy1" Content="制作单位" Margin="475,43,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="61"/>
-        <Label x:Name="label3_Copy2" Content="数据" Margin="475,72,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="53"/>
+        <Label x:Name="label3_Copy1" Content="制作单位" Margin="475,43,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77"/>
+        <Label x:Name="label3_Copy2" Content="数据" Margin="475,72,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="210"/>
         <Button x:Name="btnSave" Content="保存已抽取" HorizontalAlignment="Left" Height="24" Margin="132,457,0,0" VerticalAlignment="Top" Width="334" Click="btnSave_Click"/>
         <Button x:Name="btnGetOneAndSave" Content="抽取一组并保存" HorizontalAlignment="Left" Height="24" Margin="118,316,0,0" VerticalAlignment="Top" Width="150" RenderTransformOrigin="0.705,0.539" Click="btnGetOneAndSave_Click" IsEnabled="False" Visibility="Hidden"/>
         <Button x:Name="btnGetAllAndSave" Content="抽取全部并保存" Height="24" Margin="275,316,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Click="btnGetAllAndSave_Click" IsEnabled="False" Visibility="Hidden"/>
         <Button x:Name="btnPrintPreview" Content="打印预览" HorizontalAlignment="Left" Height="24" Margin="621,457,0,0" VerticalAlignment="Top" Width="64" Click="btnPrintPreview_Click"/>
         <Button x:Name="btnReset" Content="重置" HorizontalAlignment="Left" Height="24" Margin="21,457,0,0" VerticalAlignment="Top" Width="44" Click="btnReset_Click"/>
-        <Label x:Name="label3_Copy3" Content="执法人员" Margin="17,15,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="94"/>
-        <Label x:Name="label3_Copy4" Content="区域" Margin="125,15,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="88"/>
+        <Label x:Name="label3_Copy3" Content="执法人员" Margin="17,15,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="103"/>
+        <Label x:Name="label3_Copy4" Content="区域" Margin="125,15,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="107"/>
         <Label x:Name="label3_Copy5" Content="经营单位" Margin="240,15,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="161"/>
-        <Label x:Name="label3_Copy6" Content="已抽取数据" Margin="475,15,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="82"/>
+        <Label x:Name="label3_Copy6" Content="已抽取数据" Margin="475,15,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="280"/>
         <CheckBox x:Name="checkBox" Content="可重复抽取" HorizontalAlignment="Left" Margin="132,255,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.915,-0.809"/>
         <Button x:Name="btnPrint" Content="打印" HorizontalAlignment="Left" Height="24" Margin="691,457,0,0" VerticalAlignment="Top" Width="64" Click="btnPrint_Click"/>
         <Button x:Name="btnPageSet" Content="页面设置" HorizontalAlignment="Left" Height="24" Margin="482,457,0,0" VerticalAlignment="Top" Width="64" Click="btnPageSet_Click"/>
